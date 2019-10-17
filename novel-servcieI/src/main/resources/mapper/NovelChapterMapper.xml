@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.novel.dao.NovelChapterDao" >
+    <resultMap id="BaseResultMap" type="com.novel.model.NovelChapter" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="title_id" property="title_id" jdbcType="INTEGER" />
+        <result column="chapterName" property="chapterName" jdbcType="VARCHAR" />
+        <result column="chapterURl" property="chapterURl" jdbcType="VARCHAR" />
+        <result column="chapterContent" property="chapterContent" jdbcType="LONGVARCHAR" />
+        <result column="chapterNum" property="chapterNum" jdbcType="INTEGER" />
+        <result column="chapterSize" property="chapterSize" jdbcType="DECIMAL" />
+    </resultMap>
+    <sql id="Base_Column" >
+        id,title_id,chapterName, chapterURl,chapterContent,chapterNum,chapterSize
+    </sql>
+
+    <sql id="Base_Column_exclude" >
+        a.id,a.title_id,a.chapterName,a.chapterURl,a.chapterNum,a.chapterSize
+    </sql>
+
+    <!-- 引入自定义缓存类实现cache接口 ，放在所有语句的前方-->
+
+    <select id="findAllModel" resultMap="BaseResultMap" parameterType="int">
+        SELECT * FROM novel_chapter where title_id = #{novel_id}
+    </select>
+
+    <select id="findModel" resultMap="BaseResultMap" parameterType="com.novel.model.NovelChapter">
+        SELECT * FROM novel_chapter where 1=1
+        <if test="id!=0 ">
+            and id = #{id}
+        </if>
+        <if test="title_id!=0 ">
+            and title_id = #{title_id}
+        </if>
+        <if test="chapterName!=null and chapterName!=''">
+            and chapterName like concat('%',#{chapterName},'%')
+        </if>
+        <if test="chapterURl!=null and chapterURl!=''">
+            and chapterURl like concat('%',#{chapterURl},'%')
+        </if>
+    </select>
+
+    <select id="findChaptersByChapterId" parameterType="int" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_exclude" />,b.context as chapterContent from novel_chapter a LEFT join novel_chapter_context b on a.id=b.chaperDeatil_id  where a.id in (#{chapter_id}-2,#{chapter_id}-1,#{chapter_id},#{chapter_id}+1,#{chapter_id}+2)
+    </select>
+
+    <select id="findOnlyChaptersByChapterId" parameterType="int" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_exclude" />,b.context as chapterContent from novel_chapter a LEFT join novel_chapter_context b on a.id=b.chaperDeatil_id  where a.id = #{chapter_id}
+    </select>
+
+    <insert id="insertModel" parameterType="com.novel.model.NovelChapter" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT into `novel_chapter` (title_id,chapterName, chapterURl,chapterContent,chapterNum,chapterSize) VALUES(#{title_id},#{chapterName},#{chapterURl},#{chapterContent},#{chapterNum},#{chapterSize});
+    </insert>
+
+    <delete id="deleteByTitleId" parameterType="int">
+        DELETE from novel_chapter where title_id=#{title_id};
+    </delete>
+</mapper>

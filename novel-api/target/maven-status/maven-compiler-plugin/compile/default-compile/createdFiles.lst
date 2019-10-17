@@ -1,0 +1,9 @@
+com/novel/service/UserService.class
+com/novel/model/CollectVersion.class
+com/novel/model/User.class
+com/novel/model/Novel_Site.class
+com/novel/model/ChapterContext.class
+com/novel/service/ChapterService.class
+com/novel/model/NovelChapter.class
+com/novel/service/NovelService.class
+com/novel/model/NovelTitle.class

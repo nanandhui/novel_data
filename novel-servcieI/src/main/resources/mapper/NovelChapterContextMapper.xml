@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.novel.dao.NovelChapterContextDao" >
+    <resultMap id="BaseResultMap" type="com.novel.model.ChapterContext" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="title_id" property="title_id" jdbcType="INTEGER" />
+        <result column="chaperDeatil_id" property="chaperDeatil_id" jdbcType="INTEGER" />
+        <result column="context" property="context" jdbcType="LONGVARCHAR" />
+        <result column="formatContxt" property="formatContxt" jdbcType="LONGVARCHAR" />
+    </resultMap>
+    <sql id="Base_Column" >
+        id,title_id,chaperDeatil_id, context,formatContxt
+    </sql>
+
+    <!-- 引入自定义缓存类实现cache接口 ，放在所有语句的前方-->
+
+    <select id="findAllModel" resultMap="BaseResultMap" parameterType="com.novel.model.ChapterContext">
+        SELECT * FROM novel_chapter_context
+    </select>
+
+    <select id="findModel" resultMap="BaseResultMap" parameterType="com.novel.model.ChapterContext">
+        SELECT * FROM novel_chapter_context where 1=1
+        <if test="id!=0 ">
+            and id = #{id}
+        </if>
+        <if test="title_id!=0 ">
+            and title_id = #{title_id}
+        </if>
+        <if test="chaperDeatil_id!=0 ">
+            and chaperDeatil_id = #{chaperDeatil_id}
+        </if>
+    </select>
+
+    <insert id="insertModel" parameterType="com.novel.model.ChapterContext">
+        INSERT into `novel_chapter_context` (title_id,chaperDeatil_id, context,formatContxt) VALUES(#{title_id},#{chaperDeatil_id},#{context},#{formatContxt});
+    </insert>
+
+    <delete id="deleteByTitleId" parameterType="int">
+        DELETE from novel_chapter_context where title_id=#{title_id};
+    </delete>
+</mapper>

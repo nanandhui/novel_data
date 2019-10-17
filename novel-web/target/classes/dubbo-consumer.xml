@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+">
+    <!--定义服务应用名称-->
+    <dubbo:application name="novelConsumer"/>
+
+    <!--向注册中心注册（这里使用zookeeper当注册中心）-->
+    <dubbo:registry id="novelRegistry" protocol="zookeeper" address="127.0.0.1:2181" timeout="5000"/>
+
+    <!--定义调用服务-->
+    <dubbo:reference id="userService" interface="com.novel.service.UserService" version="1.0.0" timeout="3000" check="false"/>
+
+    <dubbo:reference id="novelService" interface="com.novel.service.NovelService" version="1.0.0" timeout="3000" check="false"/>
+
+    <dubbo:reference id="chapterService" interface="com.novel.service.ChapterService" version="1.0.0" timeout="3000" check="false"/>
+
+</beans>

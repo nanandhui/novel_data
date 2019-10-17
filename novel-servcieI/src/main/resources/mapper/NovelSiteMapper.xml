@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.novel.dao.NovelSiteDao" >
+    <resultMap id="BaseResultMap" type="com.novel.model.Novel_Site" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="site_name" property="site_name" jdbcType="VARCHAR" />
+        <result column="site_url" property="site_url" jdbcType="VARCHAR" />
+        <result column="site_level" property="site_level" jdbcType="INTEGER" />
+        <result column="site_class" property="site_class" jdbcType="INTEGER" />
+        <result column="site_encoding" property="site_encoding" jdbcType="VARCHAR" />
+
+    </resultMap>
+    <sql id="Base_Column" >
+        id, site_name, site_url,site_level,site_class,site_encoding
+    </sql>
+
+    <!-- 引入自定义缓存类实现cache接口 ，放在所有语句的前方-->
+
+    <select id="findAllModel" resultMap="BaseResultMap" parameterType="com.novel.model.Novel_Site">
+        SELECT * FROM tb_site
+    </select>
+
+    <select id="findModel" resultMap="BaseResultMap" parameterType="com.novel.model.Novel_Site">
+        SELECT * FROM tb_site where id= #{id}
+    </select>
+
+    <insert id="insertModel" parameterType="com.novel.model.Novel_Site">
+        INSERT into `tb_site` (site_name, site_url,site_level,site_class,site_encoding) VALUES(#{site_name},#{site_url},#{site_level},#{site_class},#{site_encoding});
+    </insert>
+</mapper>
